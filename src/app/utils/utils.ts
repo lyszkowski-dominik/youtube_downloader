@@ -15,10 +15,10 @@ export const fetchMusic = async (
   };
   try {
     const response = await axios.request(options);
-    console.log(response);
     const link = response.data.link;
     setResult(link);
   } catch (error) {
+    // implement handling errors
     console.log('error');
   }
 };
