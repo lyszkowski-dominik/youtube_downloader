@@ -9,14 +9,17 @@ export const fetchMusic = async (
     url: 'https://youtube-mp36.p.rapidapi.com/dl',
     params: { id: id },
     headers: {
-      'X-RapidAPI-Key': process.env.NEXT_PUBLIC_YT_API_KEY,
+      'X-RapidAPI-Key': process.env.YT_API_KEY,
       'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com',
     },
   };
   try {
     const response = await axios.request(options);
     const link = response.data.link;
+    console.log(response);
     setResult(link);
+    console.log(link);
+    console.log(process.env.YT_API_KEY);
   } catch (error) {
     // implement handling errors
     console.log(error);
