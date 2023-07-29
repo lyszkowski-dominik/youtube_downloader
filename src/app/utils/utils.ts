@@ -16,10 +16,7 @@ export const fetchMusic = async (
   try {
     const response = await axios.request(options);
     const link = response.data.link;
-    console.log(response);
     setResult(link);
-    console.log(link);
-    console.log(process.env.YT_API_KEY);
   } catch (error) {
     // implement handling errors
     console.log(error);
