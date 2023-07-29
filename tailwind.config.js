@@ -8,14 +8,18 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        Dosis:['Dosis', 'sans-serif']
+        Dosis: ['Dosis', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      backgroundColor: (theme) => ({
+        ...theme('colors'),
+        bluish: '#0083d1',
+      }),
     },
   },
   plugins: [],
-}
+};
