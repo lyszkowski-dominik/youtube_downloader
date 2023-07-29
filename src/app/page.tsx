@@ -1,6 +1,8 @@
 'use client';
 import { Dosis } from 'next/font/google';
 import { fetchMusic } from './utils/utils';
+import { extractID } from './utils/utils';
+import { useState } from 'react';
 import {
   Formik,
   FormikHelpers,
@@ -20,10 +22,18 @@ interface FormValues {
 }
 
 export default function Home() {
-  const handleDownloadButton = (e: any) => {
-    e.preventDefault();
-    console.log(e);
+  const [downloadURL, setDownloadURL] = useState('');
+  const handleDownloadButton = (
+    values: FormValues,
+    actions: FormikHelpers<FormValues>
+  ) => {
+    console.log(values, actions);
+    const songID = extractID(values.url);
+    console.log(songID);
+    fetchMusic(songID, setDownloadURL);
 
+    actions.setSubmitting(false);
+    actions.resetForm();
     // implement extracting id from URL and pass it to fetchMusic function
   };
 
@@ -34,14 +44,7 @@ export default function Home() {
       <div className="text-center min-w-full">
         <div className={`text-4xl ${dosis.className}`}>
           Simple Youtube Downloader
-          <Formik
-            initialValues={initialValues}
-            onSubmit={(values, actions) => {
-              console.log({ values, actions });
-              actions.setSubmitting(false);
-              actions.resetForm();
-            }}
-          >
+          <Formik initialValues={initialValues} onSubmit={handleDownloadButton}>
             <Form>
               <label
                 htmlFor="url"
@@ -59,8 +62,23 @@ export default function Home() {
                 type="submit"
                 className="mt-5 min-w-200 bg-amber-400 h-12 rounded-lg inline-block p-2 text-center align-middle text-lg transition ease-in-out hover:bg-bluish duration-300"
               >
-                Download song
+                Load song
               </button>
+              {downloadURL ? (
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={downloadURL}
+                  className="mt-5 ml-5 min-w-200 bg-amber-400 h-12 rounded-lg inline-block p-2 text-center align-middle text-lg no-underline transition ease-in-out hover:bg-bluish duration-300 "
+                  onClick={() => {
+                    setDownloadURL('');
+                  }}
+                >
+                  Download song
+                </a>
+              ) : (
+                ''
+              )}
             </Form>
           </Formik>
         </div>
