@@ -20,9 +20,7 @@ export default function Home() {
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
-    console.log(values, actions);
     const songID = extractID(values.url);
-    console.log(songID);
     fetchMusic(songID, setDownloadURL);
 
     actions.setSubmitting(false);

@@ -9,7 +9,7 @@ export const fetchMusic = async (
     url: 'https://youtube-mp36.p.rapidapi.com/dl',
     params: { id: id },
     headers: {
-      'X-RapidAPI-Key': process.env.YT_API_KEY,
+      'X-RapidAPI-Key': process.env.NEXT_PUBLIC_YT_API_KEY,
       'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com',
     },
   };
@@ -19,7 +19,7 @@ export const fetchMusic = async (
     setResult(link);
   } catch (error) {
     // implement handling errors
-    console.log('error');
+    console.log(error);
   }
 };
 
