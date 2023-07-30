@@ -29,3 +29,10 @@ export const extractID = (url: string): string => {
   const r = url.match(rx) ?? 'Error';
   return r[1];
 };
+
+export const validateURL = (url: string): string | undefined => {
+  let error;
+  if (!url) error = "Invalid URL";
+  if (!url.includes('yout')) error = 'Invalid URL';
+  return error;
+};
