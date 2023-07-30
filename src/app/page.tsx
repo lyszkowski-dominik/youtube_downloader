@@ -1,6 +1,6 @@
 'use client';
 import { Dosis } from 'next/font/google';
-import { fetchMusic, extractID, validateURL } from './utils/utils';
+import { fetchMusic, extractID, validateURL, my_error } from './utils/utils';
 import { useState } from 'react';
 import { Formik, FormikHelpers, Form, Field } from 'formik';
 import { AxiosError } from 'axios';
@@ -29,7 +29,7 @@ export default function Home() {
         const link = await fetchMusic(songID);
         setDownloadURL(link);
       } catch (error: any) {
-        if (error instanceof AxiosError || error instanceof Error)
+        if (error instanceof my_error)
           setError(error.message);
       }
     })();

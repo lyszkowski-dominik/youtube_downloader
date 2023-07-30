@@ -13,10 +13,11 @@ export const fetchMusic = async (id: string) => {
   try {
     const response = await axios.request(options);
     const link = response.data.link;
+    if (link === '') throw new my_error("Video can't be downloaded");
     return link;
   } catch (error: any) {
     if (error instanceof AxiosError || error instanceof Error)
-      throw { message: 'Error parsing URL', cause: error };
+      throw new my_error('Error parsing URL', error);
   }
 };
 
@@ -33,3 +34,7 @@ export const validateURL = (url: string): string | undefined => {
   if (!url.includes('youtu')) error = 'Invalid URL';
   return error;
 };
+
+export class my_error {
+  constructor(public message: string, public cause?: Error) {}
+}
