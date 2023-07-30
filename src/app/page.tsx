@@ -3,7 +3,7 @@ import { Dosis } from 'next/font/google';
 import { fetchMusic, extractID, validateURL } from './utils/utils';
 import { useState } from 'react';
 import { Formik, FormikHelpers, Form, Field } from 'formik';
-import { log } from 'console';
+import { AxiosError } from 'axios';
 
 const dosis = Dosis({
   weight: '500',
@@ -16,16 +16,25 @@ interface FormValues {
 
 export default function Home() {
   const [downloadURL, setDownloadURL] = useState('');
+  const [error, setError] = useState('');
+
   const handleDownloadButton = (
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
     const songID = extractID(values.url);
-    try {
-      fetchMusic(songID, setDownloadURL);
-    } catch (error) {
-      console.log(error);
-    }
+
+    (async function () {
+      try {
+        const link = await fetchMusic(songID);
+        setDownloadURL(link);
+      } catch (error: any) {
+        if (error instanceof AxiosError || error instanceof Error)
+          setError(error.message);
+      }
+    })();
+
+    // fetchMusic(songID, setDownloadURL);
     actions.setSubmitting(false);
     actions.resetForm();
   };
@@ -53,6 +62,9 @@ export default function Home() {
                   className="block mx-auto h-10 w-6/12 rounded-lg text-lg text-center"
                   validate={validateURL}
                 />
+                {error && (
+                  <div className="block text-red-700 text-2xl m-3">{error}</div>
+                )}
                 {errors.url && touched.url && (
                   <div className="text-2xl text-red-700">{errors.url}</div>
                 )}

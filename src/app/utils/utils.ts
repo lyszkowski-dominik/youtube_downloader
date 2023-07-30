@@ -1,9 +1,6 @@
-const axios = require('axios');
+import axios, { AxiosError } from 'axios';
 
-export const fetchMusic = async (
-  id: string,
-  setResult: (link: string) => void
-) => {
+export const fetchMusic = async (id: string) => {
   const options = {
     method: 'GET',
     url: 'https://youtube-mp36.p.rapidapi.com/dl',
@@ -16,10 +13,10 @@ export const fetchMusic = async (
   try {
     const response = await axios.request(options);
     const link = response.data.link;
-    setResult(link);
-  } catch (error) {
-    // implement handling errors
-    console.log(error);
+    return link;
+  } catch (error: any) {
+    if (error instanceof AxiosError || error instanceof Error)
+      throw { message: 'Error parsing URL', cause: error };
   }
 };
 
@@ -32,7 +29,7 @@ export const extractID = (url: string): string => {
 
 export const validateURL = (url: string): string | undefined => {
   let error;
-  if (!url) error = "Invalid URL";
-  if (!url.includes('yout')) error = 'Invalid URL';
+  if (!url) error = 'Invalid URL';
+  if (!url.includes('youtu')) error = 'Invalid URL';
   return error;
 };
